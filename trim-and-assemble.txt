@@ -4,7 +4,7 @@
 
 4. curl -O -L https://s3.amazonaws.com/public.ged.msu.edu/ecoli_ref-5m.fastq.gz
 
-5. #Kept trying to run gunzip -c ecoli_ref-5m.fastq.gz, and my terminal kept hanging…small wonder
+5. #Kept trying to run gunzip -c ecoli_ref-5m.fastq.gz, and my terminal kept hangingâ€¦small wonder
 
 6. pip install khmer==2.0
 
@@ -44,4 +44,4 @@
 
 Conclusion
 
-	The QUAST statistics revealed that running the single end reads of the 5M E coli genome through Trimmomatic creates minor increases the number of longer contigs and decreases the total length. The number of contigs >= 1000 bp went down from 93 to 91 contigs, and the total number of bp went down from 4572412 bp to 4571902 bp.
+	The QUAST statistics revealed that running the single end reads of the 5M E coli genome through Trimmomatic minorly increases the number of longer contigs and decreases the total length. The number of contigs >= 1000 bp went down from 93 to 91 contigs, and the total number of bp went down from 4572412 bp to 4571902 bp. All other changes were similarly minute.
