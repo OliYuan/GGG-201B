@@ -1,0 +1,47 @@
+1. bash
+2. mkdir ~/work
+3. cd ~/work
+
+4. curl -O -L https://s3.amazonaws.com/public.ged.msu.edu/ecoli_ref-5m.fastq.gz
+
+5. #Kept trying to run gunzip -c ecoli_ref-5m.fastq.gz, and my terminal kept hanging…small wonder
+
+6. pip install khmer==2.0
+
+7. gunzip -c ecoli_ref-5m.fastq.gz | \
+
+8. split-paired-reads.py -1 top.R1.fq -2 top.R2.fq
+
+9. sudo apt-get -y install trimmomatic
+10. wget https://anonscm.debian.org/cgit/debian-med/trimmomatic.git/plain/adapters/TruSeq3-PE.fa
+
+11. TrimmomaticPE top.R1.fq top.R2.fq \
+12. trimmed.R1.fq orphan1 trimmed.R2.fq orphan2 \
+13. ILLUMINACLIP:TruSeq3-PE.fa:2:40:15 \
+14. LEADING:2 TRAILING:2 \
+15. SLIDINGWINDOW:4:2 \
+16. MINLEN:25
+
+17. interleave-reads.py trimmed.R1.fq trimmed.R2.fq > trimmed-pe.fq
+
+18. git clone https://github.com/voutcn/megahit.git
+19. cd megahit
+20. make -j 4
+
+21. ~/work/megahit --12 trimmed-pe.fq -o ecoli_1
+
+22. cp ecoli_1/final.contigs.fa ecoli-assembly-trim.fa
+
+23. cd ~/
+24. git clone https://github.com/ablab/quast.git -b release_4.2
+25. export PYTHONPATH=$(pwd)/quast/libs/
+
+26. cd ~/work
+27. ~/quast/quast.py ecoli-assembly-trim.fa -o ecoli_trim_report
+
+28. python2.7 ~/quast/quast.py ecoli-assembly-trim.fa -o ecoli_trim_report
+
+
+Conclusion
+
+	The QUAST statistics revealed that running the single end reads of the 5M E coli genome through Trimmomatic creates minor increases the number of longer contigs and decreases the total length. The number of contigs >= 1000 bp went down from 93 to 91 contigs, and the total number of bp went down from 4572412 bp to 4571902 bp.
