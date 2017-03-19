@@ -1,11 +1,11 @@
 #Lab HW 3
 
 #Commands
-#1. Connect to Terminal. Run `bash`.
+#1. Connect to Terminal. Run `bash`:
 
         bash
         
-#2. Install edgeR.
+#2. Install edgeR:
         cd
         git clone https://github.com/OliYuan/GGG-201B.git
         sudo Rscript --no-save  ~/GGG-201B/install-edgeR.R
@@ -32,12 +32,12 @@
         curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458494/ERR458494.fastq.gz
         curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458495/ERR458495.fastq.gz
 
-#6. Download two mut and two wt SRA records.
+#6. Download two wt and two mut SRA records:
 
-        #mut
+        #wt
         curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458878/ERR458878.fastq.gz
         curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458879/ERR458879.fastq.gz
-        #wt
+        #mut
         curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458507/ERR458507.fastq.gz
         curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458508/ERR458508.fastq.gz
 
@@ -48,3 +48,54 @@
 #7. Index the yeast transcriptome:
 
         salmon index --index yeast_orfs --type quasi --transcripts orf_coding.fasta.gz
+
+#8. Run salmon on all the samples:
+
+        for i in *.fastq.gz
+        do
+                salmon quant -i yeast_orfs --libType U -r $i -o $i.quant --seqBias --gcBias
+        done
+         
+#9. Collect all of the sample counts:
+
+        curl -L -O https://github.com/ngs-docs/2016-aug-nonmodel-rnaseq/raw/master/files/gather-counts.py
+        python2 gather-counts.py
+         
+#10. Get the updated salmon script (I had to do curl because I cloned my github before putting the updated script into it):
+
+        curl -L -O https://github.com/OliYuan/GGG-201B/yeast.salmon.R 
+        #this actually didn't give me a working script. For some reason, I got the following when I tried to run it:
+                #Error: unexpected symbol in "Not Found" 
+                #Execution halted
+        #when I did 'head yeast.salmon.R' I got:
+                #Not Foundubuntu@ip-172-31-0-224:~$
+        #Weird! I had already put the Rscript into my repo. Why did this happen?
+
+#11. Make a new git clone that acutally has the yeast.salmon.R script (sigh):
+
+        cd ..
+        mkdir newclone
+        cd newclone
+        git clone https://github.com/OliYuan/GGG-201B.git
+        
+#12. Run EdgeR with the updated script at FDR<0.05:
+
+        cd ..
+        cd yeast
+        Rscript --no-save ~/newclone/GGG-201B/yeast.salmon.R
+
+#13. Rename the .csv file so that I can grab the Lab 8 .csv later and not have conflicting file names:
+
+        mv yeast-edgeR.csv HW3-yeast-edgeR.csv
+        
+#14. Get the Lab 8 .csv:
+        
+        curl -L -O  https://raw.githubusercontent.com/ctb/2017-ucdavis-igg201b/master/lab8/yeast-edgeR.csv
+        
+#15. Compare the files, and save just the differences in a .txt file:
+
+        diff -u yeast-edgeR.csv HW3-yeast-edgeR.csv > diff-yeast-edgeR.txt
+
+#16. Summary
+        
+#16. Win! (feels like a Pyrrhic victory though)
