@@ -1,0 +1,40 @@
+# Lab HW 3
+
+## Commands
+#1. Connect to Terminal. Run `bash`.
+
+#2. Install edgeR.
+        cd
+        git clone https://github.com/OliYuan/GGG-201B.git
+        sudo Rscript --no-save  ~/GGG-201B/install-edgeR.R
+        
+#3. Install [salmon](https://salmon.readthedocs.io):
+
+        cd
+        curl -L -O https://github.com/COMBINE-lab/salmon/releases/download/v0.8.0/Salmon-0.8.0_linux_x86_64.tar.gz
+        tar xzf Salmon-0.8.0_linux_x86_64.tar.gz
+        export PATH=$PATH:$HOME/Salmon-latest_linux_x86_64/bin
+
+#4. Run:
+
+        mkdir yeast
+        cd yeast
+
+#5. Download the previous six SRA records from [Schurch et al, 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4878611/):
+
+        curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458500/ERR458500.fastq.gz
+        curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458501/ERR458501.fastq.gz
+        curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458502/ERR458502.fastq.gz
+
+        curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458493/ERR458493.fastq.gz
+        curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458494/ERR458494.fastq.gz
+        curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458495/ERR458495.fastq.gz
+
+#6. Download two mut and two wt SRA records.
+        #mut
+        curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458878/ERR458878.fastq.gz
+        curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458879/ERR458879.fastq.gz
+        #wt
+        curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458507/ERR458507.fastq.gz
+        curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458508/ERR458508.fastq.gz
+
