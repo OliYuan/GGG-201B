@@ -21,7 +21,7 @@ print(data)
 
 ###
 
-group <- c(rep("mut", 5), rep("wt", 5))
+group <- c(rep("wt", 5), rep("mut", 5))
 
 dge = DGEList(counts=data, group=group)
 dge <- estimateCommonDisp(dge)
