@@ -1,8 +1,10 @@
-# Lab HW 3
+#Lab HW 3
 
-## Commands
+#Commands
 #1. Connect to Terminal. Run `bash`.
 
+        bash
+        
 #2. Install edgeR.
         cd
         git clone https://github.com/OliYuan/GGG-201B.git
@@ -31,6 +33,7 @@
         curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458495/ERR458495.fastq.gz
 
 #6. Download two mut and two wt SRA records.
+
         #mut
         curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458878/ERR458878.fastq.gz
         curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458879/ERR458879.fastq.gz
@@ -38,3 +41,10 @@
         curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458507/ERR458507.fastq.gz
         curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458508/ERR458508.fastq.gz
 
+#6. Download the yeast reference transcriptome:
+
+        curl -O http://downloads.yeastgenome.org/sequence/S288C_reference/orf_dna/orf_coding.fasta.gz
+        
+#7. Index the yeast transcriptome:
+
+        salmon index --index yeast_orfs --type quasi --transcripts orf_coding.fasta.gz
