@@ -34,10 +34,10 @@
 
 #6. Download two wt and two mut SRA records:
 
-        #wt
+        #two wt techreplicates from another biolreplicate
         curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458878/ERR458878.fastq.gz
         curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458879/ERR458879.fastq.gz
-        #mut
+        #two mut techreplicates from another biolreplicate
         curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458507/ERR458507.fastq.gz
         curl -O ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR458/ERR458508/ERR458508.fastq.gz
 
@@ -78,24 +78,78 @@
         cd newclone
         git clone https://github.com/OliYuan/GGG-201B.git
         
-#12. Run EdgeR with the updated script at FDR<0.05:
+#12. Run EdgeR with the updated script:
 
         cd ..
         cd yeast
         Rscript --no-save ~/newclone/GGG-201B/yeast.salmon.R
 
-#13. Rename the .csv file so that I can grab the Lab 8 .csv later and not have conflicting file names:
+#13. Rename the csv file so that I can grab the Lab 8 .csv later and not have conflicting file names:
 
         mv yeast-edgeR.csv HW3-yeast-edgeR.csv
         
-#14. Get the Lab 8 .csv:
+#14. Get the Lab 8 csv:
         
         curl -L -O  https://raw.githubusercontent.com/ctb/2017-ucdavis-igg201b/master/lab8/yeast-edgeR.csv
-        
-#15. Compare the files, and save just the differences in a .txt file:
 
-        diff -u yeast-edgeR.csv HW3-yeast-edgeR.csv > diff-yeast-edgeR.txt
+#At this point I had to stop my instance, so I saved my files from my Jupyter Notebook and continued the analysis in RStudio, which uses the same commands right?
 
-#16. Summary
+#15. Convert the csv files into data frames:
+
+        lab8 <- read.csv(yeast.edgeR.csv)
+        hw3 <- read.csv(HW3-yeast-edgeR.csv)
         
-#16. Win! (feels like a Pyrrhic victory though)
+#16. Make new data frames that only keep the genes with FDR<0.05:
+
+        x <- 0.05
+        lab8fdr <- lab8[lab8[,ncol(lab8)]<x,]
+        hw3fdr <- hw3[hw3[,ncol(hw3)]<x,]
+        
+#17. Make a pair of data frames for upregulated and downregulated genes for each set of DE genes. 
+        #This is done by separating them by positive or negative logFC:
+
+        y <- 0
+        lab8fdrupreg <- lab8fdr[lab8fdr$logFC>y,]
+        hw3fdrupreg <- hw3fdr[hw3fdr$logFC>y,]
+        lab8fdrdownreg <- lab8fdr[lab8fdr$logFC>y,]
+        hw3fdrdownreg <- hw3fdr[hw3fdr$logFC>y,]
+        
+#18. Compare the number of genes in each file:
+
+        nrow(hw3fdr)
+                #2940
+        nrow(lab8fdr)
+                #4030
+                
+        nrow(hw3fdrupreg)
+                #559
+        nrow(lab8fdrupreg)
+                #3470
+                
+        nrow(hw3fdrdownreg)
+                #2381
+        nrow(lab8fdrdownreg)
+                #560
+       
+#Summary
+
+        #Win!
+        
+        
+        
+        
+      
+      
+      
+      
+      
+      
+      
+      
+        #Just kidding. How come I feel someone else is going to sass you the exact same way?
+        #The new file had 1090 fewer genes that passed the 0.05 FDR. 
+        #This could be explained by the addition of another biological replicate, which increases the accuracy, and reduces false positives.
+        #The new file has a reverse trend of the lab 8 file. The new file has more downregulated genes than upregulated genes.
+        #Looking at the MDS plot, the two newly added wild-type SDA records clusterd far away from the other wt records. 
+        #Perhaps those records are biasing the counts towards a particular direction, and causing the change in trend.
+
